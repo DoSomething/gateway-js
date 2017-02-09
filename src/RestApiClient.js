@@ -75,8 +75,6 @@ class RestApiClient {
   get(path, query = {}) {
     const url = `${this.url}/${path}${this.stringifyQuery(query)}`;
 
-    console.log(url);
-
     return this.send('GET', url);
   }
 
@@ -101,11 +99,9 @@ class RestApiClient {
   post(path, body = {}) {
     const url = `${this.url}/${path}`;
 
-    console.log(url, body);
-
-    // return this.send('POST', url, {
-    //   body: JSON.stringify(body)
-    // });
+    return this.send('POST', url, {
+      body: JSON.stringify(body)
+    });
   }
 
   /**
