@@ -46,6 +46,18 @@ class RestApiClient {
   }
 
   /**
+   * Send a DELETE request to the given path URI.
+   *
+   * @param  {String} path
+   * @return {Object}
+   */
+  delete(path) {
+    const url = `${this.url}/${path}`;
+
+    return this.send('DELETE', url);
+  }
+
+  /**
    * Get the CSRF token if present as a meta tag in the document.
    *
    * @return {String|null}
