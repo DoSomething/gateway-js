@@ -2,15 +2,15 @@
   "name": "@dosomething/gateway",
   "version": "1.0.0",
   "description": "Standard JS API client for DoSomething.org services.",
-  "main": "dist/gateway.js",
+  "main": "lib/gateway.js",
   "babel": {
     "presets": [
       "es2015"
     ]
   },
   "scripts": {
-    "start": "webpack",
-    "build": "NODE_ENV=production webpack",
+    "start": "webpack & babel src --watch --out-dir=lib",
+    "build": "NODE_ENV=production webpack && babel src --out-dir lib",
     "prepublish": "npm run build"
   },
   "author": "Diego Lorenzo <dlorenzo@dosomething.org>",
@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@dosomething/webpack-config": "^1.1.1",
+    "babel-cli": "^6.22.2",
     "babel-preset-es2015": "^6.22.0",
     "cross-env": "^3.1.4",
     "webpack": "^1.14.0",

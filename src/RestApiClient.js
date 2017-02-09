@@ -2,21 +2,47 @@ import merge from 'lodash/merge';
 
 class RestApiClient {
   constructor(url, overrides = {}) {
-    this.headers = {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    };
 
-    const csrfToken = document.querySelector('meta[name="csrf-token"]');
-
-    if (csrfToken) {
-      this.headers['X-CSRF-Token'] = csrfToken.getAttribute('content');
+    if (!url) {
+      this.url = this.getLocalUrl();
+    } else {
+      this.url = url;
     }
 
-    this.url = url;
+    this.options = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    };
 
+    const csrfToken = this.getCsrfToken();
 
-    merge(this, overrides);
+    if (csrfToken) {
+      this.options.headers['X-CSRF-Token'] = csrfToken;
+    }
+
+    merge(this.options, overrides);
+  }
+
+  /**
+   * Get the CSRF token if present as a meta tag in the document.
+   *
+   * @return {String|null}
+   */
+  getCsrfToken() {
+    const element = document.querySelector('meta[name="csrf-token"]');
+
+    return element ? element.getAttribute('content') : null;
+  }
+
+  /**
+   * Get the local domain url.
+   *
+   * @return {String}
+   */
+  getLocalUrl() {
+    return `//${window.location.hostname}${window.location.port}`;
   }
 }
 
