@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "webpack & babel src --watch --out-dir=lib",
-    "build": "NODE_ENV=production webpack && babel src --out-dir lib",
+    "build": "NODE_ENV=production webpack && babel src --out-dir=lib",
     "prepublish": "npm run build"
   },
   "author": "Diego Lorenzo <dlorenzo@dosomething.org>",
