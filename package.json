@@ -1,6 +1,6 @@
 {
   "name": "@dosomething/gateway",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Standard JS API client for DoSomething.org services.",
   "main": "lib/gateway.js",
   "babel": {
