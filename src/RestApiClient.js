@@ -145,12 +145,16 @@ class RestApiClient {
     merge(options, data);
 
     // Developer Output:
-    console.log('%c API Client %s Request:',
+    console.groupCollapsed('%c Gateway: %c %s %s %s',
       'background-color: rgba(105,157,215,0.5); color: rgba(33,70,112,1); display: block; font-weight: bold; line-height: 1.5;',
-      method
+      'background-color: transparent; color: black; font-weight: bold; line-height: 1.5;',
+      method,
+      url.host,
+      url.pathname
     );
-    console.log('Options: \n%o', options);
     console.log('URL: %s', url.toString());
+    console.log('Options:', options);
+    console.groupEnd();
 
     return window.fetch(url, options)
       .then(this.checkStatus)
