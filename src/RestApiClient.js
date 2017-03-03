@@ -74,7 +74,8 @@ class RestApiClient {
    * @return {String}
    */
   getLocalUrl() {
-    return `//${window.location.hostname}${window.location.port}`;
+    const port = window.location.port ? `:${window.location.port}` : '';
+    return `//${window.location.hostname}${port}`;
   }
 
   /**
