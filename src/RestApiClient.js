@@ -1,13 +1,12 @@
 import merge from 'lodash/merge';
 
 class RestApiClient {
-  constructor(url, overrides = {}) {
-
-    if (!url) {
-      this.url = this.getLocalUrl();
-    } else {
-      this.url = url;
+  constructor(baseUrl, overrides = {}) {
+    if (!baseUrl) {
+      baseUrl = window.location.origin;
     }
+
+    this.baseUrl = new URL(baseUrl);
 
     this.config = {
       headers: {
@@ -52,7 +51,7 @@ class RestApiClient {
    * @return {Object}
    */
   delete(path) {
-    const url = `${this.url}/${path}`;
+    const url = new URL(path, this.baseUrl);
 
     return this.send('DELETE', url);
   }
@@ -69,16 +68,6 @@ class RestApiClient {
   }
 
   /**
-   * Get the local domain url.
-   *
-   * @return {String}
-   */
-  getLocalUrl() {
-    const port = window.location.port ? `:${window.location.port}` : '';
-    return `//${window.location.hostname}${port}`;
-  }
-
-  /**
    * Send a GET request to the given path URI.
    *
    * @param  {String} path
@@ -86,7 +75,8 @@ class RestApiClient {
    * @return {Object}
    */
   get(path, query = {}) {
-    const url = `${this.url}/${path}${this.stringifyQuery(query)}`;
+    const url = new URL(path, this.baseUrl);
+    url.search = this.stringifyQuery(query);
 
     return this.send('GET', url);
   }
@@ -110,7 +100,7 @@ class RestApiClient {
    * @return {Object}
    */
   post(path, body = {}) {
-    const url = `${this.url}/${path}`;
+    const url = new URL(path, this.baseUrl);
 
     return this.send('POST', url, {
       body: JSON.stringify(body)
@@ -155,12 +145,16 @@ class RestApiClient {
     merge(options, data);
 
     // Developer Output:
-    console.log('%c API Client %s Request:',
+    console.groupCollapsed('%c Gateway: %c %s %s %s',
       'background-color: rgba(105,157,215,0.5); color: rgba(33,70,112,1); display: block; font-weight: bold; line-height: 1.5;',
-      method
+      'background-color: transparent; color: black; font-weight: bold; line-height: 1.5;',
+      method,
+      url.host,
+      url.pathname
     );
-    console.log('URL: \n%s', url);
-    console.log('Options: \n%o', options);
+    console.log('URL: %s', url.toString());
+    console.log('Options:', options);
+    console.groupEnd();
 
     return window.fetch(url, options)
       .then(this.checkStatus)
