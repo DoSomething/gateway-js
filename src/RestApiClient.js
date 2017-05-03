@@ -108,6 +108,22 @@ class RestApiClient {
   }
 
   /**
+   * Send a PUT request to the given path URI.
+   *
+   * @param  {String} path
+   * @param  {Object} body
+   * @param  {Object} headers
+   * @return {Object}
+   */
+   put(path, body = {}) {
+    const url = new URL(path, this.baseUrl);
+
+    return this.send('PUT', url, {
+      body: JSON.stringify(body)
+    });
+   }
+
+  /**
    * Convert object with query parameters into string.
    *
    * @param  {Object} query
