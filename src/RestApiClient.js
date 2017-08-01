@@ -133,7 +133,12 @@ class RestApiClient {
     let urlParams = [];
 
     Object.keys(query).forEach((key) => {
-      urlParams.push(`${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`);
+      if (key === 'filter') {
+        var filterObj = query[key];
+        urlParams.push(encodeURIComponent(key) + '[' + Object.keys(filterObj) + ']' + '=' + filterObj[Object.keys(filterObj)[0]]);
+      } else {
+        urlParams.push(encodeURIComponent(key) + '=' + encodeURIComponent(query[key]));
+      }
     });
 
     if (urlParams.length === 0) {
