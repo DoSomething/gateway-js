@@ -128,19 +128,24 @@ class RestApiClient {
    *
    * @param  {Object} query
    * @return {String}
+   * @see https://stackoverflow.com/a/42604801/4422345 for where this code was taken from.
    */
-  stringifyQuery(query = {}) {
-    let urlParams = [];
+  stringifyQuery(params = {}, prefix) {
+    const query = Object.keys(params).map((key) => {
+      const value  = params[key];
 
-    Object.keys(query).forEach((key) => {
-      urlParams.push(`${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`);
+      if (params.constructor === Array)
+        key = `${prefix}[]`;
+      else if (params.constructor === Object)
+        key = (prefix ? `${prefix}[${key}]` : key);
+
+      if (typeof value === 'object')
+        return stringifyQuery(value, key);
+      else
+        return `${key}=${encodeURIComponent(value)}`;
     });
 
-    if (urlParams.length === 0) {
-      return '';
-    }
-
-    return `?${urlParams.join('&')}`;
+    return [].concat.apply([], query).join('&');
   }
 
   /**
