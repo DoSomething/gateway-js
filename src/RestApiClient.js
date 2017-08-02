@@ -128,6 +128,7 @@ class RestApiClient {
    *
    * @param  {Object} query
    * @return {String}
+   * Uses code from https://stackoverflow.com/a/42604801/4422345 for this function.
    */
   stringifyQuery(params = {}, prefix) {
     const query = Object.keys(params).map((key) => {
