@@ -129,23 +129,22 @@ class RestApiClient {
    * @param  {Object} query
    * @return {String}
    */
-  stringifyQuery(query = {}) {
-    let urlParams = [];
+  stringifyQuery(params = {}, prefix) {
+    const query = Object.keys(params).map((key) => {
+      const value  = params[key];
 
-    Object.keys(query).forEach((key) => {
-      if (key === 'filter') {
-        var filterObj = query[key];
-        urlParams.push(encodeURIComponent(key) + '[' + Object.keys(filterObj) + ']' + '=' + filterObj[Object.keys(filterObj)[0]]);
-      } else {
-        urlParams.push(encodeURIComponent(key) + '=' + encodeURIComponent(query[key]));
-      }
+      if (params.constructor === Array)
+        key = `${prefix}[]`;
+      else if (params.constructor === Object)
+        key = (prefix ? `${prefix}[${key}]` : key);
+
+      if (typeof value === 'object')
+        return stringifyQuery(value, key);
+      else
+        return `${key}=${encodeURIComponent(value)}`;
     });
 
-    if (urlParams.length === 0) {
-      return '';
-    }
-
-    return `?${urlParams.join('&')}`;
+    return [].concat.apply([], query).join('&');
   }
 
   /**
