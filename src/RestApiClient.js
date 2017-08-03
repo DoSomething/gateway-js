@@ -1,4 +1,5 @@
 import merge from 'lodash/merge';
+import { stringifyQuery } from './helpers';
 
 class RestApiClient {
   constructor(baseUrl, overrides = {}) {
@@ -76,7 +77,7 @@ class RestApiClient {
    */
   get(path, query = {}) {
     const url = new URL(path, this.baseUrl);
-    url.search = this.stringifyQuery(query);
+    url.search = stringifyQuery(query);
 
     return this.send('GET', url);
   }
@@ -122,31 +123,6 @@ class RestApiClient {
       body: JSON.stringify(body)
     });
    }
-
-  /**
-   * Convert object with query parameters into string.
-   *
-   * @param  {Object} query
-   * @return {String}
-   * @see https://stackoverflow.com/a/42604801/4422345 for where this code was taken from.
-   */
-  stringifyQuery(params = {}, prefix) {
-    const query = Object.keys(params).map((key) => {
-      const value  = params[key];
-
-      if (params.constructor === Array)
-        key = `${prefix}[]`;
-      else if (params.constructor === Object)
-        key = (prefix ? `${prefix}[${key}]` : key);
-
-      if (typeof value === 'object')
-        return stringifyQuery(value, key);
-      else
-        return `${key}=${encodeURIComponent(value)}`;
-    });
-
-    return [].concat.apply([], query).join('&');
-  }
 
   /**
    * Send an API request using fetch() and return response.
