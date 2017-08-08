@@ -6,10 +6,12 @@
    * @see https://stackoverflow.com/a/42604801/4422345 for where this code was taken from.
    */
 export const stringifyQuery = (params = {}, prefix) => {
-  if (! params) return '';
+  if (! params) {
+    return '';
+  }
 
   const query = Object.keys(params).map((key) => {
-    const value  = params[key];
+    const value = params[key];
 
     // Properly serialize arrays or objects.
     if (params.constructor === Array) {
