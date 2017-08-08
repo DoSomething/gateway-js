@@ -6,7 +6,7 @@
    * @see https://stackoverflow.com/a/42604801/4422345 for where this code was taken from.
    */
 export const stringifyQuery = (params = {}, prefix) => {
-  const query = Object.keys(params).map((key) => {
+  const query = Object.keys(params ? params : {}).map((key) => {
     const value  = params[key];
 
     // Properly serialize arrays or objects.
