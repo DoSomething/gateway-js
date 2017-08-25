@@ -79,10 +79,10 @@ class RestApiClient {
     const url = new URL(path, this.baseUrl);
 
     if (query && typeof query === 'object') {
-      url.search = stringifyQuery(query);
-    } else {
-      url.search = query;
+      query = stringifyQuery(query);
     }
+
+    url.search = query;
 
     return this.send('GET', url);
   }
