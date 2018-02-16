@@ -130,6 +130,22 @@ class RestApiClient {
    }
 
   /**
+   * Send a PATCH request to the given path URI.
+   *
+   * @param  {String} path
+   * @param  {Object} body
+   * @param  {Object} headers
+   * @return {Object}
+   */
+   patch(path, body = {}) {
+    const url = new URL(path, this.baseUrl);
+
+    return this.send('PATCH', url, {
+      body: JSON.stringify(body)
+    });
+   }
+
+  /**
    * Send an API request using fetch() and return response.
    *
    * @param  {String} method
