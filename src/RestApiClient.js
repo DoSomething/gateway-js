@@ -1,5 +1,7 @@
-import merge from 'lodash/merge';
-import { stringifyQuery } from './helpers';
+import { get, merge } from 'lodash';
+
+import GatewayError from './GatewayError';
+import { stringifyQuery, gatewayLog, gatewayError } from './helpers';
 
 class RestApiClient {
   constructor(baseUrl, overrides = {}) {
@@ -11,10 +13,10 @@ class RestApiClient {
 
     this.config = {
       headers: {
-        'Content-Type': 'application/json',
         'Accept': 'application/json',
+        'Content-Type': 'application/json',
       },
-      credentials: overrides.credentials || 'same-origin',
+      credentials: 'same-origin',
     };
 
     const csrfToken = this.getCsrfToken();
@@ -23,7 +25,7 @@ class RestApiClient {
       this.config.headers['X-CSRF-Token'] = csrfToken;
     }
 
-    merge(this.config, overrides);
+    this.setConfig(this.config, overrides);
   }
 
   /**
@@ -37,11 +39,7 @@ class RestApiClient {
     if (response.status >= 200 && response.status < 300) {
       return response;
     } else {
-      const error = new Error(response.statusText);
-
-      error.response = response;
-
-      throw error;
+      throw new GatewayError(response, response.statusText);
     }
   }
 
@@ -101,7 +99,7 @@ class RestApiClient {
    * Send a POST request to the given path URI.
    *
    * @param  {String} path
-   * @param  {Object} body
+   * @param  {FormData|Object} body
    * @param  {Object} headers
    * @return {Object}
    */
@@ -109,7 +107,7 @@ class RestApiClient {
     const url = new URL(path, this.baseUrl);
 
     return this.send('POST', url, {
-      body: JSON.stringify(body)
+      body: this.setRequestBody(body),
     });
   }
 
@@ -117,31 +115,31 @@ class RestApiClient {
    * Send a PUT request to the given path URI.
    *
    * @param  {String} path
-   * @param  {Object} body
+   * @param  {FormData|Object} body
    * @param  {Object} headers
    * @return {Object}
    */
-   put(path, body = {}) {
+  put(path, body = {}) {
     const url = new URL(path, this.baseUrl);
 
     return this.send('PUT', url, {
-      body: JSON.stringify(body)
+      body: this.setRequestBody(body),
     });
-   }
+  }
 
   /**
    * Send a PATCH request to the given path URI.
    *
    * @param  {String} path
-   * @param  {Object} body
+   * @param  {FormData|Object} body
    * @param  {Object} headers
    * @return {Object}
    */
-   patch(path, body = {}) {
+  patch(path, body = {}) {
     const url = new URL(path, this.baseUrl);
 
     return this.send('PATCH', url, {
-      body: JSON.stringify(body)
+      body: this.setRequestBody(body),
     });
    }
 
@@ -162,25 +160,50 @@ class RestApiClient {
 
     merge(options, data);
 
-    // Developer Output:
-    console.groupCollapsed('%c Gateway: %c %s %s %s',
-      'background-color: rgba(105,157,215,0.5); color: rgba(33,70,112,1); display: block; font-weight: bold; line-height: 1.5;',
-      'background-color: transparent; color: black; font-weight: bold; line-height: 1.5;',
-      method,
-      url.host,
-      url.pathname
-    );
-    console.log('URL: %s', url.toString());
-    console.log('Options:', options);
-    console.groupEnd();
+    gatewayLog(method, url, options);
 
     return window.fetch(url, options)
       .then(this.checkStatus)
       .then(this.parseJson)
-      .catch((data) => {
-        console.log(data);
-        console.error('um, there was an error! handle that shizzzzz!');
+      .catch((error) => {
+        gatewayError(error);
+
+        return error.response.json().then((data) => {
+          throw new GatewayError(data, error.response.statusText);
+        });
       });
+  }
+
+  /**
+   * Set the configuration options for the client.
+   *
+   * @see https://github.com/github/fetch/issues/505#issuecomment-293064470
+   * @param  {Object} config
+   * @param  {Object} overrides
+   * @return {void}
+   */
+  setConfig(config, overrides) {
+    merge(config, overrides);
+
+    const contentType = get(overrides, 'headers[Content-Type]', null);
+
+    if (contentType === 'multipart/form-data') {
+      delete(config.headers['Content-Type']);
+    }
+  }
+
+  /**
+  * Set the request body depending on type of data.
+  *
+  * @param  {FormData|Object} data
+  * @return {FormData|string}
+  */
+  setRequestBody(data) {
+    if (data instanceof FormData) {
+      return data;
+    }
+
+    return JSON.stringify(data);
   }
 }
 
