@@ -68,6 +68,7 @@ export const gatewayError = (error) => {
     error.response.statusText,
     error.response.status,
   );
+  console.log('Date: %s', error.date);
   console.log('URL: %s', error.response.url);
   console.log('Code: %s', error.response.status);
   console.log('Message: %s', error.response.statusText);

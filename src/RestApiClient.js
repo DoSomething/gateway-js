@@ -1,5 +1,6 @@
 import { get, merge } from 'lodash';
 
+import GatewayError from './GatewayError';
 import { stringifyQuery, gatewayLog, gatewayError } from './helpers';
 
 class RestApiClient {
@@ -38,11 +39,12 @@ class RestApiClient {
     if (response.status >= 200 && response.status < 300) {
       return response;
     } else {
-      const error = new Error(response.statusText);
+      throw new GatewayError(response, response.statusText);
+      // const error = new Error(response.statusText);
 
-      error.response = response;
+      // error.response = response;
 
-      throw error;
+      // throw error;
     }
   }
 
@@ -171,7 +173,9 @@ class RestApiClient {
       .catch((error) => {
         gatewayError(error);
 
-        throw error;
+        return error.response.json().then((data) => {
+          throw new GatewayError(data, error.response.statusText);
+        });
       });
   }
 
