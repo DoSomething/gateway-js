@@ -146,12 +146,12 @@ class RestApiClient {
     });
    }
 
-   /**
-   * Prepare the request body depending on type of data.
-   *
-   * @param  {FormData|Object} data
-   * @return {FormData|string}
-   */
+  /**
+  * Prepare the request body depending on type of data.
+  *
+  * @param  {FormData|Object} data
+  * @return {FormData|string}
+  */
   prepareRequestBody(data) {
     if (data instanceof FormData) {
       return data;
