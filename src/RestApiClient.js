@@ -40,11 +40,6 @@ class RestApiClient {
       return response;
     } else {
       throw new GatewayError(response, response.statusText);
-      // const error = new Error(response.statusText);
-
-      // error.response = response;
-
-      // throw error;
     }
   }
 
