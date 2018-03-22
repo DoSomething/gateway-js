@@ -1,4 +1,4 @@
-import merge from 'lodash/merge';
+import { get, merge } from 'lodash';
 
 import { stringifyQuery, gatewayLog, gatewayError } from './helpers';
 
@@ -12,8 +12,8 @@ class RestApiClient {
 
     this.config = {
       headers: {
-        'Content-Type': 'application/json',
         'Accept': 'application/json',
+        'Content-Type': 'application/json',
       },
       credentials: 'same-origin',
     };
@@ -24,7 +24,7 @@ class RestApiClient {
       this.config.headers['X-CSRF-Token'] = csrfToken;
     }
 
-    merge(this.config, overrides);
+    this.setConfig(this.config, overrides);
   }
 
   /**
@@ -110,7 +110,7 @@ class RestApiClient {
     const url = new URL(path, this.baseUrl);
 
     return this.send('POST', url, {
-      body: this.prepareRequestBody(body),
+      body: this.setRequestBody(body),
     });
   }
 
@@ -122,13 +122,13 @@ class RestApiClient {
    * @param  {Object} headers
    * @return {Object}
    */
-   put(path, body = {}) {
+  put(path, body = {}) {
     const url = new URL(path, this.baseUrl);
 
     return this.send('PUT', url, {
-      body: this.prepareRequestBody(body),
+      body: this.setRequestBody(body),
     });
-   }
+  }
 
   /**
    * Send a PATCH request to the given path URI.
@@ -138,27 +138,13 @@ class RestApiClient {
    * @param  {Object} headers
    * @return {Object}
    */
-   patch(path, body = {}) {
+  patch(path, body = {}) {
     const url = new URL(path, this.baseUrl);
 
     return this.send('PATCH', url, {
-      body: this.prepareRequestBody(body),
+      body: this.setRequestBody(body),
     });
    }
-
-  /**
-  * Prepare the request body depending on type of data.
-  *
-  * @param  {FormData|Object} data
-  * @return {FormData|string}
-  */
-  prepareRequestBody(data) {
-    if (data instanceof FormData) {
-      return data;
-    }
-
-    return JSON.stringify(data);
-  }
 
   /**
    * Send an API request using fetch() and return response.
@@ -177,7 +163,6 @@ class RestApiClient {
 
     merge(options, data);
 
-    // Developer Output:
     gatewayLog(method, url, options);
 
     return window.fetch(url, options)
@@ -185,7 +170,41 @@ class RestApiClient {
       .then(this.parseJson)
       .catch((error) => {
         gatewayError(error);
+
+        throw error;
       });
+  }
+
+  /**
+   * Set the configuration options for the client.
+   *
+   * @see https://github.com/github/fetch/issues/505#issuecomment-293064470
+   * @param  {Object} config
+   * @param  {Object} overrides
+   * @return {void}
+   */
+  setConfig(config, overrides) {
+    merge(config, overrides);
+
+    const contentType = get(overrides, 'headers[Content-Type]', null);
+
+    if (contentType === 'multipart/form-data') {
+      delete(config.headers['Content-Type']);
+    }
+  }
+
+  /**
+  * Set the request body depending on type of data.
+  *
+  * @param  {FormData|Object} data
+  * @return {FormData|string}
+  */
+  setRequestBody(data) {
+    if (data instanceof FormData) {
+      return data;
+    }
+
+    return JSON.stringify(data);
   }
 }
 
