@@ -1,5 +1,6 @@
 import merge from 'lodash/merge';
-import { stringifyQuery } from './helpers';
+
+import { stringifyQuery, gatewayLog, gatewayError } from './helpers';
 
 class RestApiClient {
   constructor(baseUrl, overrides = {}) {
@@ -14,7 +15,7 @@ class RestApiClient {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
-      credentials: overrides.credentials || 'same-origin',
+      credentials: 'same-origin',
     };
 
     const csrfToken = this.getCsrfToken();
@@ -101,7 +102,7 @@ class RestApiClient {
    * Send a POST request to the given path URI.
    *
    * @param  {String} path
-   * @param  {Object} body
+   * @param  {FormData|Object} body
    * @param  {Object} headers
    * @return {Object}
    */
@@ -109,7 +110,7 @@ class RestApiClient {
     const url = new URL(path, this.baseUrl);
 
     return this.send('POST', url, {
-      body: JSON.stringify(body)
+      body: this.prepareRequestBody(body),
     });
   }
 
@@ -117,7 +118,7 @@ class RestApiClient {
    * Send a PUT request to the given path URI.
    *
    * @param  {String} path
-   * @param  {Object} body
+   * @param  {FormData|Object} body
    * @param  {Object} headers
    * @return {Object}
    */
@@ -125,7 +126,7 @@ class RestApiClient {
     const url = new URL(path, this.baseUrl);
 
     return this.send('PUT', url, {
-      body: JSON.stringify(body)
+      body: this.prepareRequestBody(body),
     });
    }
 
@@ -133,7 +134,7 @@ class RestApiClient {
    * Send a PATCH request to the given path URI.
    *
    * @param  {String} path
-   * @param  {Object} body
+   * @param  {FormData|Object} body
    * @param  {Object} headers
    * @return {Object}
    */
@@ -141,9 +142,23 @@ class RestApiClient {
     const url = new URL(path, this.baseUrl);
 
     return this.send('PATCH', url, {
-      body: JSON.stringify(body)
+      body: this.prepareRequestBody(body),
     });
    }
+
+   /**
+   * Prepare the request body depending on type of data.
+   *
+   * @param  {FormData|Object} data
+   * @return {FormData|string}
+   */
+  prepareRequestBody(data) {
+    if (data instanceof FormData) {
+      return data;
+    }
+
+    return JSON.stringify(data);
+  }
 
   /**
    * Send an API request using fetch() and return response.
@@ -163,23 +178,13 @@ class RestApiClient {
     merge(options, data);
 
     // Developer Output:
-    console.groupCollapsed('%c Gateway: %c %s %s %s',
-      'background-color: rgba(105,157,215,0.5); color: rgba(33,70,112,1); display: block; font-weight: bold; line-height: 1.5;',
-      'background-color: transparent; color: black; font-weight: bold; line-height: 1.5;',
-      method,
-      url.host,
-      url.pathname
-    );
-    console.log('URL: %s', url.toString());
-    console.log('Options:', options);
-    console.groupEnd();
+    gatewayLog(method, url, options);
 
     return window.fetch(url, options)
       .then(this.checkStatus)
       .then(this.parseJson)
-      .catch((data) => {
-        console.log(data);
-        console.error('um, there was an error! handle that shizzzzz!');
+      .catch((error) => {
+        gatewayError(error);
       });
   }
 }
