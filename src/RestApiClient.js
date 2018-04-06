@@ -48,10 +48,9 @@ class RestApiClient {
    *
    * @param  {String} path
    * @param  {FormData|Object} body
-   * @param  {Object} headers
    * @return {Object}
    */
-  delete(path) {
+  delete(path, body = {}) {
     const url = new URL(path, this.baseUrl);
 
     return this.send('DELETE', url, {
