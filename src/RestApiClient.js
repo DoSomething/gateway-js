@@ -103,7 +103,6 @@ class RestApiClient {
    *
    * @param  {String} path
    * @param  {FormData|Object} body
-   * @param  {Object} headers
    * @return {Object}
    */
   post(path, body = {}) {
@@ -119,7 +118,6 @@ class RestApiClient {
    *
    * @param  {String} path
    * @param  {FormData|Object} body
-   * @param  {Object} headers
    * @return {Object}
    */
   put(path, body = {}) {
@@ -135,7 +133,6 @@ class RestApiClient {
    *
    * @param  {String} path
    * @param  {FormData|Object} body
-   * @param  {Object} headers
    * @return {Object}
    */
   patch(path, body = {}) {
