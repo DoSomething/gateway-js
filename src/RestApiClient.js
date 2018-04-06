@@ -47,12 +47,16 @@ class RestApiClient {
    * Send a DELETE request to the given path URI.
    *
    * @param  {String} path
+   * @param  {FormData|Object} body
+   * @param  {Object} headers
    * @return {Object}
    */
   delete(path) {
     const url = new URL(path, this.baseUrl);
 
-    return this.send('DELETE', url);
+    return this.send('DELETE', url, {
+      body: this.setRequestBody(body),
+    });
   }
 
   /**
