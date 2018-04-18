@@ -1,11 +1,4 @@
-import RestApiClient from './RestApiClient';
-import PhoenixAshes from './PhoenixAshes';
-import Phoenix from './Phoenix';
-import Northstar from './Northstar';
-
-export {
-  RestApiClient,
-  PhoenixAshes,
-  Phoenix,
-  Northstar,
-}
+export { default as RestApiClient } from './RestApiClient';
+export { default as PhoenixAshes } from './PhoenixAshes';
+export { default as Phoenix } from './Phoenix';
+export { default as Northstar } from './Northstar';
