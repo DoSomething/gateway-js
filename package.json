@@ -9,6 +9,7 @@
       "@dosomething/babel-config"
     ]
   },
+  "sideEffects": false,
   "scripts": {
     "build": "npm run build:es && npm run build:cjs",
     "build:es": "NODE_ENV=test babel src --out-dir=es",
