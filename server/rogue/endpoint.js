@@ -15,6 +15,7 @@ class RogueEndpoint {
     return this.client
       .request('clientCredentials')
       .get(`${this.client.baseUri}/${endpoint}`)
+      .accept('json')
       .query(query)
       .then(res => res.body);
   }
@@ -29,6 +30,7 @@ class RogueEndpoint {
     return this.client
       .request('clientCredentials')
       .post(`${this.client.baseUri}/${endpoint}`)
+      .accept('json')
       .send(data)
       .then(res => res.body);
   }

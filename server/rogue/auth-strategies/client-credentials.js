@@ -84,7 +84,6 @@ class ClientCredentials extends EventEmitter {
   getAuthorizedClient() {
     return superagent.use((req) => {
       req.set('Authorization', `Bearer ${this.token.access_token}`);
-      req.accept('application/json');
     });
   }
   /**

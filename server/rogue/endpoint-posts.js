@@ -62,7 +62,8 @@ class RogueEndpointPosts extends RogueEndpoint {
     const fileProperty = this.client.config.photoPostCreation.fileProperty;
     const request = this.client
       .request('clientCredentials')
-      .post(`${this.client.baseUri}/${this.endpoint}`);
+      .post(`${this.client.baseUri}/${this.endpoint}`)
+      .accept('json');
 
     // add multipart fields for request
     Object.keys(data).forEach((key) => {
