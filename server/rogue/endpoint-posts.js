@@ -20,14 +20,14 @@ class RogueEndpointPosts extends RogueEndpoint {
       .then(responseBody => responseBody);
   }
   /**
-   * get - Retrieve a single Post
+   * getById - Retrieve a single Post
    *
    * @see https://github.com/DoSomething/rogue/blob/master/docs/endpoints/posts.md#retrieve-a-specific-post
    * @param  {string|number} id
    * @param  {Object} query
    * @return {Promise}
    */
-  get(id, query) {
+  getById(id, query) {
     return this
       .executeGet(`${this.endpoint}/${id}`, query)
       .then(responseBody => responseBody);

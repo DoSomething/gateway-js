@@ -20,27 +20,27 @@ class RogueEndpointSignups extends RogueEndpoint {
       .then(responseBody => responseBody);
   }
   /**
-   * get - Retrieve a single Signup
+   * getById - Retrieve a single Signup
    *
    * @see https://github.com/DoSomething/rogue/blob/master/docs/endpoints/signups.md#retrieve-a-specific-signup
    * @param  {string|number} id
    * @param  {Object} query
    * @return {Promise}
    */
-  get(id, query) {
+  getById(id, query) {
     return this
       .executeGet(`${this.endpoint}/${id}`, query)
       .then(responseBody => responseBody);
   }
   /**
-   * activityForUserInCampaignRun - Retrieves the member's activity in a campaign run,
+   * getByUserIdAndCampaignRunId - Retrieves the member's activity in a campaign run,
    *                                including posts
    *
    * @param  {string} userId
    * @param  {number} campaignRunId
    * @return {Promise}
    */
-  activityForUserInCampaignRun(userId, campaignRunId) {
+  getByUserIdAndCampaignRunId(userId, campaignRunId) {
     const query = `include=posts&filter[northstar_id]=${userId}&filter[campaign_run_id]=${campaignRunId}`;
     return this
       .index(query);
