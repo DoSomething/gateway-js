@@ -1,7 +1,7 @@
 'use strict';
 
 const EventEmitter = require('events');
-const camelCase = require('camelcase');
+const lodash = require('lodash');
 
 const RogueEndpointSignups = require('./endpoint-signups');
 const RogueEndpointPosts = require('./endpoint-posts');
@@ -71,7 +71,7 @@ class RogueClient extends EventEmitter {
   setup() {
     this.availableStrategies = {};
     this.strategies.forEach((strategy) => {
-      const name = camelCase(strategy.constructor.name);
+      const name = lodash.camelCase(strategy.constructor.name);
       this.availableStrategies[name] = strategy;
       strategy.setup();
     });

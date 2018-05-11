@@ -23,7 +23,6 @@
   "author": "Diego Lorenzo <dlorenzo@dosomething.org>",
   "license": "MIT",
   "dependencies": {
-    "camelcase": "^5.0.0",
     "date-fns": "^1.29.0",
     "lodash": "^4.17.4",
     "simple-oauth2": "^1.5.2",
