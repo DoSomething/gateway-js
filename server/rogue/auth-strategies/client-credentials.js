@@ -87,12 +87,12 @@ class ClientCredentials extends EventEmitter {
     });
   }
   /**
-   * @static getInstance
+   * @static getNewInstance
    *
    * @param  {object} opts = {}
    * @return {ClientCredentials}
    */
-  static getInstance(opts = {}) {
+  static getNewInstance(opts = {}) {
     return new ClientCredentials(opts);
   }
 

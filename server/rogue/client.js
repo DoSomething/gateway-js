@@ -7,7 +7,7 @@ const RogueEndpointSignups = require('./endpoint-signups');
 const RogueEndpointPosts = require('./endpoint-posts');
 
 const config = require('../config/rogue/client');
-const clientCredentialsStrategy = require('./auth-strategies/client-credentials').getInstance({
+const clientCredentialsStrategy = require('./auth-strategies/client-credentials').getNewInstance({
   tokenConfig: {
     scope: config.authStrategies.clientCredentials.scopes,
   },
@@ -49,13 +49,13 @@ class RogueClient extends EventEmitter {
     return this.availableStrategies[strategyName].getAuthorizedClient();
   }
   /**
-   * @static getInstance
+   * @static getNewInstance
    *
    * @param  {Object} opts = {}
    * @param  {Array} strategies = []
    * @return {RogueClient}
    */
-  static getInstance(opts = {}) {
+  static getNewInstance(opts = {}) {
     return new RogueClient(opts);
   }
 
