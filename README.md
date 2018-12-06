@@ -36,7 +36,7 @@ console.log(new PhoenixAshes());
  * somefile.js
  */
 
- const { RogueClient } = require('@dosomething/gateway/server');
+ const { GatewayClient } = require('@dosomething/gateway/server');
 
- const rogueClient = RogueClient.getNewInstance();
+ const gatewayClient = GatewayClient.getNewInstance();
 ```

@@ -1,7 +1,9 @@
 'use strict';
 
-const RogueClient = require('./rogue/client');
+const GatewayClient = require('./lib/client');
 
 module.exports = {
-  RogueClient,
+  GatewayClient,
+  // TODO: Remove this once Conversations uses GatewayClient instead.
+  RogueClient: GatewayClient,
 };

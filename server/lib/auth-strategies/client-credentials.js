@@ -6,7 +6,7 @@ const EventEmitter = require('events');
 const superagent = require('superagent-use')(require('superagent'));
 const differenceInSeconds = require('date-fns/difference_in_seconds');
 
-const config = require('../../config/rogue/client').authStrategies.clientCredentials;
+const config = require('../../config/lib/client').authStrategies.clientCredentials;
 
 /**
  * ClientCredentials
