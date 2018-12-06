@@ -9,8 +9,6 @@ module.exports = {
       baseUri: process.env.DS_ROGUE_API_BASEURI,
     },
   },
-  // TODO: Remove this property once Conversations updates to use services config above.
-  baseUri: process.env.DS_ROGUE_API_BASEURI,
   photoPostCreation: {
     fileProperty: 'file',
   },
