@@ -1,6 +1,14 @@
 'use strict';
 
 module.exports = {
+  services: {
+    northstar: {
+      baseUri: process.env.DS_NORTHSTAR_API_BASEURI,
+    },
+    rogue: {
+      baseUri: process.env.DS_ROGUE_API_BASEURI,
+    },
+  },
   baseUri: process.env.DS_ROGUE_API_BASEURI,
   photoPostCreation: {
     fileProperty: 'file',

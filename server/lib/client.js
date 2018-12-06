@@ -3,8 +3,8 @@
 const EventEmitter = require('events');
 const lodash = require('lodash');
 
-const RogueEndpointSignups = require('./endpoint-signups');
-const RogueEndpointPosts = require('./endpoint-posts');
+const GatewayEndpointSignups = require('./endpoint-signups');
+const GatewayEndpointPosts = require('./endpoint-posts');
 
 const config = require('../config/lib/client');
 const clientCredentialsStrategy = require('./auth-strategies/client-credentials').getNewInstance({
@@ -32,8 +32,8 @@ class GatewayClient extends EventEmitter {
     this.setup();
 
     // Endpoints
-    this.Signups = new RogueEndpointSignups(this);
-    this.Posts = new RogueEndpointPosts(this);
+    this.Signups = new GatewayEndpointSignups(this);
+    this.Posts = new GatewayEndpointPosts(this);
   }
   /**
    * request - Gets a request client that is authorized by the strategy named in the strategyName

@@ -1,11 +1,11 @@
 'use strict';
 
-const RogueEndpoint = require('./endpoint');
+const GatewayEndpoint = require('./endpoint');
 
-class RogueEndpointSignups extends RogueEndpoint {
+class GatewayEndpointSignups extends GatewayEndpoint {
   constructor(client) {
     super(client);
-    this.endpoint = 'signups';
+    this.url = `${this.client.config.services.rogue.baseUri}/signups`;
   }
   /**
    * index - Retrieve all Signups
@@ -16,7 +16,7 @@ class RogueEndpointSignups extends RogueEndpoint {
    */
   index(query) {
     return this
-      .executeGet(this.endpoint, query)
+      .executeGet(this.url, query)
       .then(responseBody => responseBody);
   }
   /**
@@ -29,7 +29,7 @@ class RogueEndpointSignups extends RogueEndpoint {
    */
   getById(id, query) {
     return this
-      .executeGet(`${this.endpoint}/${id}`, query)
+      .executeGet(`${this.url}/${id}`, query)
       .then(responseBody => responseBody);
   }
   /**
@@ -54,9 +54,9 @@ class RogueEndpointSignups extends RogueEndpoint {
    */
   create(data) {
     return this
-      .executePost(this.endpoint, data)
+      .executePost(this.url, data)
       .then(responseBody => responseBody);
   }
 }
 
-module.exports = RogueEndpointSignups;
+module.exports = GatewayEndpointSignups;

@@ -1,39 +1,39 @@
 'use strict';
 
-class RogueEndpoint {
+class GatewayEndpoint {
   constructor(client) {
     this.client = client;
   }
   /**
-   * executeGet - sends GET requests to an endpoint in Rogue
+   * executeGet - sends GET requests to a Gateway endpoint
    *
-   * @param  {string} endpoint
+   * @param  {string} url
    * @param  {Object} query = {}
    * @return {Promise}
    */
-  executeGet(endpoint, query = {}) {
+  executeGet(url, query = {}) {
     return this.client
       .request('clientCredentials')
-      .get(`${this.client.baseUri}/${endpoint}`)
+      .get(url)
       .accept('json')
       .query(query)
       .then(res => res.body);
   }
   /**
-   * executePost - sends POST requests to an endpoint in Rogue
+   * executePost - sends POST requests to a Gateway endpoint
    *
-   * @param  {string} endpoint
+   * @param  {string} url
    * @param  {Object} data
    * @return {Promise}
    */
-  executePost(endpoint, data) {
+  executePost(url, data) {
     return this.client
       .request('clientCredentials')
-      .post(`${this.client.baseUri}/${endpoint}`)
+      .post(url)
       .accept('json')
       .send(data)
       .then(res => res.body);
   }
 }
 
-module.exports = RogueEndpoint;
+module.exports = GatewayEndpoint;

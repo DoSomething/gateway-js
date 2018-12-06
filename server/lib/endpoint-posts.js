@@ -1,11 +1,11 @@
 'use strict';
 
-const RogueEndpoint = require('./endpoint');
+const GatewayEndpoint = require('./endpoint');
 
-class RogueEndpointPosts extends RogueEndpoint {
+class GatewayEndpointPosts extends GatewayEndpoint {
   constructor(client) {
     super(client);
-    this.endpoint = 'posts';
+    this.url = `${this.client.config.services.rogue.baseUri}/posts`;
   }
   /**
    * index - Retrieve all Posts
@@ -16,7 +16,7 @@ class RogueEndpointPosts extends RogueEndpoint {
    */
   index(query) {
     return this
-      .executeGet(this.endpoint, query)
+      .executeGet(this.url, query)
       .then(responseBody => responseBody);
   }
   /**
@@ -29,7 +29,7 @@ class RogueEndpointPosts extends RogueEndpoint {
    */
   getById(id, query) {
     return this
-      .executeGet(`${this.endpoint}/${id}`, query)
+      .executeGet(`${this.url}/${id}`, query)
       .then(responseBody => responseBody);
   }
   /**
@@ -41,7 +41,7 @@ class RogueEndpointPosts extends RogueEndpoint {
    */
   create(data) {
     return this
-      .executePost(this.endpoint, data)
+      .executePost(this.url, data)
       .then(responseBody => responseBody);
   }
 
@@ -62,7 +62,7 @@ class RogueEndpointPosts extends RogueEndpoint {
     const fileProperty = this.client.config.photoPostCreation.fileProperty;
     const request = this.client
       .request('clientCredentials')
-      .post(`${this.client.baseUri}/${this.endpoint}`)
+      .post(this.url)
       .accept('json');
 
     // add multipart fields for request
@@ -84,4 +84,4 @@ class RogueEndpointPosts extends RogueEndpoint {
   // End of "Private" methods --------------------
 }
 
-module.exports = RogueEndpointPosts;
+module.exports = GatewayEndpointPosts;
