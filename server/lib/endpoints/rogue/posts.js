@@ -1,8 +1,8 @@
 'use strict';
 
-const GatewayEndpoint = require('./endpoint');
+const OAuthEndpoint = require('../oauth-endpoint');
 
-class GatewayEndpointPosts extends GatewayEndpoint {
+class RogueEndpointPosts extends OAuthEndpoint {
   constructor(client) {
     super(client);
     this.url = `${this.client.config.services.rogue.baseUri}/posts`;
@@ -41,7 +41,7 @@ class GatewayEndpointPosts extends GatewayEndpoint {
    */
   create(data) {
     return this
-      .executePost(this.url, data)
+      .executePost(data)
       .then(responseBody => responseBody);
   }
 
@@ -54,11 +54,10 @@ class GatewayEndpointPosts extends GatewayEndpoint {
    *                set manually. Superagent detects it by using the .field and .attach API methods.
    *
    * @see http://visionmedia.github.io/superagent/#multipart-requests
-   * @param  {string} endpoint
    * @param  {Object} data
    * @return {Promise}
    */
-  executePost(endpoint, data) {
+  executePost(data) {
     const fileProperty = this.client.config.photoPostCreation.fileProperty;
     const request = this.client
       .request('clientCredentials')
@@ -84,4 +83,4 @@ class GatewayEndpointPosts extends GatewayEndpoint {
   // End of "Private" methods --------------------
 }
 
-module.exports = GatewayEndpointPosts;
+module.exports = RogueEndpointPosts;

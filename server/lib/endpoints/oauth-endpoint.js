@@ -1,11 +1,11 @@
 'use strict';
 
-class GatewayEndpoint {
+class OAuthEndpoint {
   constructor(client) {
     this.client = client;
   }
   /**
-   * executeGet - sends GET requests to a Gateway endpoint
+   * executeGet - sends GET requests to a service with OAuth authentication
    *
    * @param  {string} url
    * @param  {Object} query = {}
@@ -20,7 +20,7 @@ class GatewayEndpoint {
       .then(res => res.body);
   }
   /**
-   * executePost - sends POST requests to a Gateway endpoint
+   * executePost - sends POST requests to a service with OAuth authentication
    *
    * @param  {string} url
    * @param  {Object} data
@@ -36,4 +36,4 @@ class GatewayEndpoint {
   }
 }
 
-module.exports = GatewayEndpoint;
+module.exports = OAuthEndpoint;

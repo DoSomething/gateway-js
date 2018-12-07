@@ -1,8 +1,8 @@
 'use strict';
 
-const GatewayEndpoint = require('./endpoint');
+const OAuthEndpoint = require('../oauth-endpoint');
 
-class GatewayEndpointSignups extends GatewayEndpoint {
+class RogueEndpointSignups extends OAuthEndpoint {
   constructor(client) {
     super(client);
     this.url = `${this.client.config.services.rogue.baseUri}/signups`;
@@ -33,19 +33,6 @@ class GatewayEndpointSignups extends GatewayEndpoint {
       .then(responseBody => responseBody);
   }
   /**
-   * getByUserIdAndCampaignRunId - Retrieves the member's activity in a campaign run,
-   *                                including posts
-   *
-   * @param  {string} userId
-   * @param  {number} campaignRunId
-   * @return {Promise}
-   */
-  getByUserIdAndCampaignRunId(userId, campaignRunId) {
-    const query = `include=posts&filter[northstar_id]=${userId}&filter[campaign_run_id]=${campaignRunId}`;
-    return this
-      .index(query);
-  }
-  /**
    * create - Create a new Signup
    *
    * @see https://github.com/DoSomething/rogue/blob/master/docs/endpoints/signups.md#create-a-signup
@@ -59,4 +46,4 @@ class GatewayEndpointSignups extends GatewayEndpoint {
   }
 }
 
-module.exports = GatewayEndpointSignups;
+module.exports = RogueEndpointSignups;

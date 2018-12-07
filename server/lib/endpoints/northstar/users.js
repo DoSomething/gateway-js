@@ -1,8 +1,8 @@
 'use strict';
 
-const GatewayEndpoint = require('./endpoint');
+const OAuthEndpoint = require('../oauth-endpoint');
 
-class GatewayEndpointUsers extends GatewayEndpoint {
+class NorthstarUsersEndpoint extends OAuthEndpoint {
   constructor(client) {
     super(client);
     this.url = `${this.client.config.services.northstar.baseUri}/users`;
@@ -32,6 +32,18 @@ class GatewayEndpointUsers extends GatewayEndpoint {
       .executePost(this.url, data)
       .then(responseBody => responseBody);
   }
+  /**
+   * update - Updates a User
+   *
+   * @see https://github.com/DoSomething/rogue/blob/master/docs/endpoints/posts.md#create-a-post
+   * @param  {Object} data
+   * @return {Promise}
+   */
+  update(id, data) {
+    return this
+      .executePost(`${this.url}/${id}`, data)
+      .then(responseBody => responseBody);
+  }
 }
 
-module.exports = GatewayEndpointUsers;
+module.exports = NorthstarUsersEndpoint;

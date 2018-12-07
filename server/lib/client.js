@@ -3,9 +3,9 @@
 const EventEmitter = require('events');
 const lodash = require('lodash');
 
-const GatewayEndpointPosts = require('./endpoint-posts');
-const GatewayEndpointSignups = require('./endpoint-signups');
-const GatewayEndpointUsers = require('./endpoint-users');
+const NorthstarUsersEndpoint = require('./endpoints/northstar/users');
+const RoguePostsEndpoint = require('./endpoints/rogue/posts');
+const RogueSignupsEndpoint = require('./endpoints/rogue/signups');
 
 const config = require('../config/lib/client');
 const clientCredentialsStrategy = require('./auth-strategies/client-credentials').getNewInstance({
@@ -29,13 +29,21 @@ class GatewayClient extends EventEmitter {
     super();
     this.strategies = [clientCredentialsStrategy];
     this.config = config;
-    this.baseUri = opts.baseUri || config.baseUri;
     this.setup();
 
     // Endpoints
-    this.Signups = new GatewayEndpointSignups(this);
-    this.Posts = new GatewayEndpointPosts(this);
-    this.Users = new GatewayEndpointUsers(this);
+    this.Northstar = {
+      Users: new NorthstarUsersEndpoint(this),
+    };
+    this.Rogue = {
+      Posts: new RoguePostsEndpoint(this),
+      Signups: new RogueSignupsEndpoint(this),
+    };
+
+    // TODO: Remove this once we update Conversations lib/rogue as lib/gateway.
+    // @see https://github.com/DoSomething/gambit-conversations/blob/4.0.4/lib/rogue.js
+    this.Posts = this.Rogue.Posts;
+    this.Signups = this.Rogue.Signups;
   }
   /**
    * request - Gets a request client that is authorized by the strategy named in the strategyName
