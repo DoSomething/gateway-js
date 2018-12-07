@@ -2,15 +2,15 @@
 
 const OAuthEndpoint = require('../oauth-endpoint');
 
+/**
+ * @see https://github.com/DoSomething/rogue/blob/master/docs/endpoints/posts.md
+ */
 class RogueEndpointPosts extends OAuthEndpoint {
   constructor(client) {
     super(client);
     this.url = `${this.client.config.services.rogue.baseUri}/posts`;
   }
   /**
-   * index - Retrieve all Posts
-   *
-   * @see https://github.com/DoSomething/rogue/blob/master/docs/endpoints/posts.md#retrieve-all-posts
    * @param  {Object} query
    * @return {Promise}
    */
@@ -20,22 +20,16 @@ class RogueEndpointPosts extends OAuthEndpoint {
       .then(responseBody => responseBody);
   }
   /**
-   * getById - Retrieve a single Post
-   *
-   * @see https://github.com/DoSomething/rogue/blob/master/docs/endpoints/posts.md#retrieve-a-specific-post
-   * @param  {string|number} id
+   * @param  {String|Number} id
    * @param  {Object} query
    * @return {Promise}
    */
-  getById(id, query) {
+  get(id, query) {
     return this
       .executeGet(`${this.url}/${id}`, query)
       .then(responseBody => responseBody);
   }
   /**
-   * create - Creates a new Post
-   *
-   * @see https://github.com/DoSomething/rogue/blob/master/docs/endpoints/posts.md#create-a-post
    * @param  {Object} data
    * @return {Promise}
    */

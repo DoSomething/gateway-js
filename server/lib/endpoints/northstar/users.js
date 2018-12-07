@@ -2,28 +2,25 @@
 
 const OAuthEndpoint = require('../oauth-endpoint');
 
-class NorthstarUsersEndpoint extends OAuthEndpoint {
+/**
+ * @see https://github.com/DoSomething/northstar/blob/master/documentation/endpoints/v2/users.md
+ */
+class NorthstarEndpointUsers extends OAuthEndpoint {
   constructor(client) {
     super(client);
     this.url = `${this.client.config.services.northstar.baseUri}/users`;
   }
   /**
-   * getById - Retrieve a single User
-   *
-   * @see https://github.com/DoSomething/rogue/blob/master/docs/endpoints/posts.md#retrieve-a-specific-post
    * @param  {String} id
    * @param  {Object} query
    * @return {Promise}
    */
-  getById(id, query) {
+  get(id, query) {
     return this
       .executeGet(`${this.url}/${id}`, query)
       .then(responseBody => responseBody);
   }
   /**
-   * create - Creates a new User
-   *
-   * @see https://github.com/DoSomething/rogue/blob/master/docs/endpoints/posts.md#create-a-post
    * @param  {Object} data
    * @return {Promise}
    */
@@ -33,9 +30,7 @@ class NorthstarUsersEndpoint extends OAuthEndpoint {
       .then(responseBody => responseBody);
   }
   /**
-   * update - Updates a User
-   *
-   * @see https://github.com/DoSomething/rogue/blob/master/docs/endpoints/posts.md#create-a-post
+   * @param  {String} id
    * @param  {Object} data
    * @return {Promise}
    */
@@ -46,4 +41,4 @@ class NorthstarUsersEndpoint extends OAuthEndpoint {
   }
 }
 
-module.exports = NorthstarUsersEndpoint;
+module.exports = NorthstarEndpointUsers;

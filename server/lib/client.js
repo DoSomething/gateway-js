@@ -3,9 +3,10 @@
 const EventEmitter = require('events');
 const lodash = require('lodash');
 
-const NorthstarUsersEndpoint = require('./endpoints/northstar/users');
-const RoguePostsEndpoint = require('./endpoints/rogue/posts');
-const RogueSignupsEndpoint = require('./endpoints/rogue/signups');
+const NorthstarEndpointUsers = require('./endpoints/northstar/users');
+const RogueEndpointCampaigns = require('./endpoints/rogue/campaigns');
+const RogueEndpointPosts = require('./endpoints/rogue/posts');
+const RogueEndpointSignups = require('./endpoints/rogue/signups');
 
 const config = require('../config/lib/client');
 const clientCredentialsStrategy = require('./auth-strategies/client-credentials').getNewInstance({
@@ -33,11 +34,12 @@ class GatewayClient extends EventEmitter {
 
     // Endpoints
     this.Northstar = {
-      Users: new NorthstarUsersEndpoint(this),
+      Users: new NorthstarEndpointUsers(this),
     };
     this.Rogue = {
-      Posts: new RoguePostsEndpoint(this),
-      Signups: new RogueSignupsEndpoint(this),
+      Campaigns: new RogueEndpointCampaigns(this),
+      Posts: new RogueEndpointPosts(this),
+      Signups: new RogueEndpointSignups(this),
     };
 
     // TODO: Remove this once we update Conversations lib/rogue as lib/gateway.

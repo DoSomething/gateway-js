@@ -3,12 +3,12 @@
 const OAuthEndpoint = require('../oauth-endpoint');
 
 /**
- * @see https://github.com/DoSomething/rogue/blob/master/docs/endpoints/signups.md
+ * @see https://github.com/DoSomething/rogue/blob/master/docs/endpoints/campaigns.md
  */
-class RogueEndpointSignups extends OAuthEndpoint {
+class RogueEndpointCampaigns extends OAuthEndpoint {
   constructor(client) {
     super(client);
-    this.url = `${this.client.config.services.rogue.baseUri}/signups`;
+    this.url = `${this.client.config.services.rogue.baseUri}/campaigns`;
   }
   /**
    * @param  {Object} query
@@ -29,15 +29,6 @@ class RogueEndpointSignups extends OAuthEndpoint {
       .executeGet(`${this.url}/${id}`, query)
       .then(responseBody => responseBody);
   }
-  /**
-   * @param  {Object} data
-   * @return {Promise}
-   */
-  create(data) {
-    return this
-      .executePost(this.url, data)
-      .then(responseBody => responseBody);
-  }
 }
 
-module.exports = RogueEndpointSignups;
+module.exports = RogueEndpointCampaigns;
