@@ -3,6 +3,7 @@
 const EventEmitter = require('events');
 const lodash = require('lodash');
 
+const GraphQLEndpoint = require('./endpoints/graphql');
 const NorthstarEndpointUsers = require('./endpoints/northstar/users');
 const RogueEndpointCampaigns = require('./endpoints/rogue/campaigns');
 const RogueEndpointPosts = require('./endpoints/rogue/posts');
@@ -33,6 +34,7 @@ class GatewayClient extends EventEmitter {
     this.setup();
 
     // Endpoints
+    this.GraphQL = new GraphQLEndpoint(this);
     this.Northstar = {
       Users: new NorthstarEndpointUsers(this),
     };
