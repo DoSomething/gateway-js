@@ -8,7 +8,7 @@ const RogueEndpointCampaigns = require('./endpoints/rogue/campaigns');
 const RogueEndpointPosts = require('./endpoints/rogue/posts');
 const RogueEndpointSignups = require('./endpoints/rogue/signups');
 
-const config = require('../config/lib/client');
+const config = require('../config/src/client');
 const clientCredentialsStrategy = require('./auth-strategies/client-credentials').getNewInstance({
   tokenConfig: {
     scope: config.authStrategies.clientCredentials.scopes,

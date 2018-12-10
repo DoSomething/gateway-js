@@ -2,9 +2,6 @@
 
 module.exports = {
   services: {
-    graphql: {
-      baseUri: process.env.DS_GRAPHQL_API_BASEURI,
-    },
     northstar: {
       baseUri: process.env.DS_NORTHSTAR_API_BASEURI,
     },

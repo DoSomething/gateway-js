@@ -1,7 +1,5 @@
 node_modules/
 dist/
-## Use trailing slash, to track /server/lib
-## @see https://stackoverflow.com/a/26327728
-/lib/
+lib/
 es/
 .DS_Store
