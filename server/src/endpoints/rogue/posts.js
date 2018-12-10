@@ -14,30 +14,18 @@ class RogueEndpointPosts extends OAuthEndpoint {
    * @param  {Object} query
    * @return {Promise}
    */
-  index(query) {
-    return this
-      .executeGet(this.url, query)
-      .then(responseBody => responseBody);
-  }
+  index(query) { return this.executeGet(this.url, query); }
   /**
    * @param  {String|Number} id
    * @param  {Object} query
    * @return {Promise}
    */
-  get(id, query) {
-    return this
-      .executeGet(`${this.url}/${id}`, query)
-      .then(responseBody => responseBody);
-  }
+  get(id, query) { return this.executeGet(`${this.url}/${id}`, query); }
   /**
    * @param  {Object} data
    * @return {Promise}
    */
-  create(data) {
-    return this
-      .executePost(data)
-      .then(responseBody => responseBody);
-  }
+  create(data) { return this.executePost(data); }
 
   // "Private" methods --------------------
 

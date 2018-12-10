@@ -15,30 +15,18 @@ class NorthstarEndpointUsers extends OAuthEndpoint {
    * @param  {Object} query
    * @return {Promise}
    */
-  get(id, query) {
-    return this
-      .executeGet(`${this.url}/${id}`, query)
-      .then(responseBody => responseBody);
-  }
+  get(id, query) { return this.executeGet(`${this.url}/${id}`, query); }
   /**
    * @param  {Object} data
    * @return {Promise}
    */
-  create(data) {
-    return this
-      .executePost(this.url, data)
-      .then(responseBody => responseBody);
-  }
+  create(data) { return this.executePost(this.url, data); }
   /**
    * @param  {String} id
    * @param  {Object} data
    * @return {Promise}
    */
-  update(id, data) {
-    return this
-      .executePost(`${this.url}/${id}`, data)
-      .then(responseBody => responseBody);
-  }
+  update(id, data) { return this.executePost(`${this.url}/${id}`, data); }
 }
 
 module.exports = NorthstarEndpointUsers;
