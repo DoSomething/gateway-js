@@ -3,10 +3,12 @@
 const EventEmitter = require('events');
 const lodash = require('lodash');
 
-const RogueEndpointSignups = require('./endpoint-signups');
-const RogueEndpointPosts = require('./endpoint-posts');
+const NorthstarEndpointUsers = require('./endpoints/northstar/users');
+const RogueEndpointCampaigns = require('./endpoints/rogue/campaigns');
+const RogueEndpointPosts = require('./endpoints/rogue/posts');
+const RogueEndpointSignups = require('./endpoints/rogue/signups');
 
-const config = require('../config/rogue/client');
+const config = require('../config/src/client');
 const clientCredentialsStrategy = require('./auth-strategies/client-credentials').getNewInstance({
   tokenConfig: {
     scope: config.authStrategies.clientCredentials.scopes,
@@ -14,10 +16,10 @@ const clientCredentialsStrategy = require('./auth-strategies/client-credentials'
 });
 
 /**
- * RogueClient
+ * GatewayClient
  * @extends EventEmitter
  */
-class RogueClient extends EventEmitter {
+class GatewayClient extends EventEmitter {
   /**
    * Create a new client
    *
@@ -28,12 +30,22 @@ class RogueClient extends EventEmitter {
     super();
     this.strategies = [clientCredentialsStrategy];
     this.config = config;
-    this.baseUri = opts.baseUri || config.baseUri;
     this.setup();
 
     // Endpoints
-    this.Signups = new RogueEndpointSignups(this);
-    this.Posts = new RogueEndpointPosts(this);
+    this.Northstar = {
+      Users: new NorthstarEndpointUsers(this),
+    };
+    this.Rogue = {
+      Campaigns: new RogueEndpointCampaigns(this),
+      Posts: new RogueEndpointPosts(this),
+      Signups: new RogueEndpointSignups(this),
+    };
+
+    // TODO: Remove this once we update Conversations lib/rogue as lib/gateway.
+    // @see https://github.com/DoSomething/gambit-conversations/blob/4.0.4/lib/rogue.js
+    this.Posts = this.Rogue.Posts;
+    this.Signups = this.Rogue.Signups;
   }
   /**
    * request - Gets a request client that is authorized by the strategy named in the strategyName
@@ -44,7 +56,7 @@ class RogueClient extends EventEmitter {
    */
   request(strategyName) {
     if (!strategyName) {
-      throw new Error('RogueClient.request: a strategyName is required');
+      throw new Error('GatewayClient.request: a strategyName is required');
     }
     return this.availableStrategies[strategyName].getAuthorizedClient();
   }
@@ -53,10 +65,10 @@ class RogueClient extends EventEmitter {
    *
    * @param  {Object} opts = {}
    * @param  {Array} strategies = []
-   * @return {RogueClient}
+   * @return {GatewayClient}
    */
   static getNewInstance(opts = {}) {
-    return new RogueClient(opts);
+    return new GatewayClient(opts);
   }
 
   /**
@@ -79,4 +91,4 @@ class RogueClient extends EventEmitter {
   // End "private" methods ------------------------------------------------------------------------/
 }
 
-module.exports = RogueClient;
+module.exports = GatewayClient;

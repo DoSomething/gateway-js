@@ -1,49 +1,31 @@
 'use strict';
 
-const RogueEndpoint = require('./endpoint');
+const OAuthEndpoint = require('../oauth-endpoint');
 
-class RogueEndpointPosts extends RogueEndpoint {
+/**
+ * @see https://github.com/DoSomething/rogue/blob/master/docs/endpoints/posts.md
+ */
+class RogueEndpointPosts extends OAuthEndpoint {
   constructor(client) {
     super(client);
-    this.endpoint = 'posts';
+    this.url = `${this.client.config.services.rogue.baseUri}/posts`;
   }
   /**
-   * index - Retrieve all Posts
-   *
-   * @see https://github.com/DoSomething/rogue/blob/master/docs/endpoints/posts.md#retrieve-all-posts
    * @param  {Object} query
    * @return {Promise}
    */
-  index(query) {
-    return this
-      .executeGet(this.endpoint, query)
-      .then(responseBody => responseBody);
-  }
+  index(query) { return this.executeGet(this.url, query); }
   /**
-   * getById - Retrieve a single Post
-   *
-   * @see https://github.com/DoSomething/rogue/blob/master/docs/endpoints/posts.md#retrieve-a-specific-post
-   * @param  {string|number} id
+   * @param  {String|Number} id
    * @param  {Object} query
    * @return {Promise}
    */
-  getById(id, query) {
-    return this
-      .executeGet(`${this.endpoint}/${id}`, query)
-      .then(responseBody => responseBody);
-  }
+  get(id, query) { return this.executeGet(`${this.url}/${id}`, query); }
   /**
-   * create - Creates a new Post
-   *
-   * @see https://github.com/DoSomething/rogue/blob/master/docs/endpoints/posts.md#create-a-post
    * @param  {Object} data
    * @return {Promise}
    */
-  create(data) {
-    return this
-      .executePost(this.endpoint, data)
-      .then(responseBody => responseBody);
-  }
+  create(data) { return this.executePost(data); }
 
   // "Private" methods --------------------
 
@@ -54,15 +36,14 @@ class RogueEndpointPosts extends RogueEndpoint {
    *                set manually. Superagent detects it by using the .field and .attach API methods.
    *
    * @see http://visionmedia.github.io/superagent/#multipart-requests
-   * @param  {string} endpoint
    * @param  {Object} data
    * @return {Promise}
    */
-  executePost(endpoint, data) {
+  executePost(data) {
     const fileProperty = this.client.config.photoPostCreation.fileProperty;
     const request = this.client
       .request('clientCredentials')
-      .post(`${this.client.baseUri}/${this.endpoint}`)
+      .post(this.url)
       .accept('json');
 
     // add multipart fields for request
