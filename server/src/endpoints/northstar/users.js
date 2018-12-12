@@ -11,16 +11,22 @@ class NorthstarEndpointUsers extends OAuthEndpoint {
     this.url = `${this.client.config.services.northstar.baseUri}/users`;
   }
   /**
+   * @param  {Object} data
+   * @return {Promise}
+   */
+  create(data) { return this.executePost(this.url, data); }
+  /**
    * @param  {String} id
    * @param  {Object} query
    * @return {Promise}
    */
   get(id, query) { return this.executeGet(`${this.url}/${id}`, query); }
   /**
-   * @param  {Object} data
+   * @param  {String} id
+   * @param  {Object} query
    * @return {Promise}
    */
-  create(data) { return this.executePost(this.url, data); }
+  index(query) { return this.executeGet(this.url, query); }
   /**
    * @param  {String} id
    * @param  {Object} data
