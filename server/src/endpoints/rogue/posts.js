@@ -11,6 +11,11 @@ class RogueEndpointPosts extends OAuthEndpoint {
     this.url = `${this.client.config.services.rogue.baseUri}/posts`;
   }
   /**
+   * @param  {Object} data
+   * @return {Promise}
+   */
+  create(data) { return this.executePost(data); }
+  /**
    * @param  {Object} query
    * @return {Promise}
    */
@@ -21,11 +26,6 @@ class RogueEndpointPosts extends OAuthEndpoint {
    * @return {Promise}
    */
   get(id, query) { return this.executeGet(`${this.url}/${id}`, query); }
-  /**
-   * @param  {Object} data
-   * @return {Promise}
-   */
-  create(data) { return this.executePost(data); }
 
   // "Private" methods --------------------
 

@@ -11,10 +11,10 @@ class RogueEndpointSignups extends OAuthEndpoint {
     this.url = `${this.client.config.services.rogue.baseUri}/signups`;
   }
   /**
-   * @param  {Object} query
+   * @param  {Object} data
    * @return {Promise}
    */
-  index(query) { return this.executeGet(this.url, query) }
+  create(data) { return this.executePost(this.url, data) }
   /**
    * @param  {String|Number} id
    * @param  {Object} query
@@ -22,10 +22,10 @@ class RogueEndpointSignups extends OAuthEndpoint {
    */
   get(id, query) { return this.executeGet(`${this.url}/${id}`, query) }
   /**
-   * @param  {Object} data
+   * @param  {Object} query
    * @return {Promise}
    */
-  create(data) { return this.executePost(this.url, data) }
+  index(query) { return this.executeGet(this.url, query) }
 }
 
 module.exports = RogueEndpointSignups;

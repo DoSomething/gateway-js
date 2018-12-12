@@ -22,7 +22,6 @@ class NorthstarEndpointUsers extends OAuthEndpoint {
    */
   get(id, query) { return this.executeGet(`${this.url}/${id}`, query); }
   /**
-   * @param  {String} id
    * @param  {Object} query
    * @return {Promise}
    */
