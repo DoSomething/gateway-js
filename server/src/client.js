@@ -41,11 +41,6 @@ class GatewayClient extends EventEmitter {
       Posts: new RogueEndpointPosts(this),
       Signups: new RogueEndpointSignups(this),
     };
-
-    // TODO: Remove this once we update Conversations lib/rogue as lib/gateway.
-    // @see https://github.com/DoSomething/gambit-conversations/blob/4.0.4/lib/rogue.js
-    this.Posts = this.Rogue.Posts;
-    this.Signups = this.Rogue.Signups;
   }
   /**
    * request - Gets a request client that is authorized by the strategy named in the strategyName
