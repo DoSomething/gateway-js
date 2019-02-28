@@ -54,12 +54,6 @@ class RogueEndpointPosts extends OAuthEndpoint {
         request.field(key, data[key]);
       }
     });
-    /**
-     * In the future, Rogue is implementing the concept of actions, for now this
-     * is the expected action.
-     * TODO: Remove when apps start sending their custom "action" property
-     */
-    request.field('action', 'default');
     return request.then(res => res.body);
   }
   // End of "Private" methods --------------------
