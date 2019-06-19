@@ -147,7 +147,7 @@ class RestApiClient {
    * Send an API request using fetch() and return response.
    *
    * @param  {String} method
-   * @param  {String} url
+   * @param  {String|URL} url
    * @param  {Object} data
    * @return {Promise}
    */
@@ -162,7 +162,11 @@ class RestApiClient {
 
     gatewayLog(method, url, options);
 
-    return window.fetch(url, options)
+    // Ensure this is a string before we call fetch() so we don't end up in a
+    // kerfuffle with static typing. <https://stackoverflow.com/a/49980218>
+    const href = url instanceof URL ? url.toString() : url;
+
+    return window.fetch(href, options)
       .then(this.checkStatus)
       .then(this.parseJson)
       .catch((error) => {
