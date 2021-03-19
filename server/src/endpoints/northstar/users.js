@@ -22,6 +22,11 @@ class NorthstarEndpointUsers extends OAuthEndpoint {
    */
   getByEmail(email) { return this.executeGet(`${this.url}/email/${email}`); }
   /**
+   * @param  {String} mobile
+   * @return {Promise}
+   */
+  getByMobile(mobile) { return this.executeGet(`${this.url}/mobile/${mobile}`); }
+  /**
    * @param  {Object} data
    * @return {Promise}
    */
