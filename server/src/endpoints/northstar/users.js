@@ -1,32 +1,43 @@
 'use strict';
 
-const OAuthEndpoint = require('../oauth-endpoint');
+const NorthstarEndpoint = require('./endpoint');
 
 /**
  * @see https://github.com/DoSomething/northstar/blob/master/documentation/endpoints/v2/users.md
  */
-class NorthstarEndpointUsers extends OAuthEndpoint {
+class UsersNorthstarEndpoint extends NorthstarEndpoint {
   constructor(client) {
     super(client);
-    this.url = `${this.client.config.services.northstar.baseUri}/users`;
+
+    this.baseUri = `${this.baseUri}/v2`;
   }
   /**
    * @param  {String} id
    * @param  {Object} query
    * @return {Promise}
    */
-  get(id, query) { return this.executeGet(`${this.url}/${id}`, query); }
+  get(id, query) { return this.executeGet(`${this.baseUri}/users/${id}`, query); }
+  /**
+   * @param  {String} email
+   * @return {Promise}
+   */
+  getByEmail(email) { return this.executeGet(`${this.baseUri}/email/${email}`); }
+  /**
+   * @param  {String} mobile
+   * @return {Promise}
+   */
+  getByMobile(mobile) { return this.executeGet(`${this.baseUri}/mobile/${mobile}`); }
   /**
    * @param  {Object} data
    * @return {Promise}
    */
-  create(data) { return this.executePost(this.url, data); }
+  create(data) { return this.executePost(`${this.baseUri}/users`, data); }
   /**
    * @param  {String} id
    * @param  {Object} data
    * @return {Promise}
    */
-  update(id, data) { return this.executePost(`${this.url}/${id}`, data); }
+  update(id, data) { return this.executePost(`${this.baseUri}/users/${id}`, data); }
 }
 
-module.exports = NorthstarEndpointUsers;
+module.exports = UsersNorthstarEndpoint;
