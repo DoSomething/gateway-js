@@ -19,19 +19,26 @@ class UsersNorthstarEndpoint extends NorthstarEndpoint {
   get(id, query) { return this.executeGet(`${this.baseUri}/users/${id}`, query); }
   /**
    * @param  {String} email
+   * @param  {Object} query
    * @return {Promise}
    */
-  getByEmail(email) { return this.executeGet(`${this.baseUri}/email/${email}`); }
+  getByEmail(email, query) { return this.executeGet(`${this.baseUri}/email/${email}`, query); }
   /**
    * @param  {String} mobile
+   * @param  {Object} query
    * @return {Promise}
    */
-  getByMobile(mobile) { return this.executeGet(`${this.baseUri}/mobile/${mobile}`); }
+  getByMobile(mobile) { return this.executeGet(`${this.baseUri}/mobile/${mobile}`, query); }
   /**
    * @param  {Object} data
    * @return {Promise}
    */
   create(data) { return this.executePost(`${this.baseUri}/users`, data); }
+  /**
+   * @param  {Object} query
+   * @return {Promise}
+   */
+  index(query) { return this.executeGet(`${this.baseUri}/users`, query); }
   /**
    * @param  {String} id
    * @param  {Object} data
