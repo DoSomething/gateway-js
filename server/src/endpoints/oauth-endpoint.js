@@ -19,6 +19,7 @@ class OAuthEndpoint {
       .query(query)
       .then(res => res.body);
   }
+
   /**
    * executePost - sends POST requests to a service with OAuth authentication
    *
@@ -30,6 +31,22 @@ class OAuthEndpoint {
     return this.client
       .request('clientCredentials')
       .post(url)
+      .accept('json')
+      .send(data)
+      .then(res => res.body);
+  }
+
+  /**
+   * executePut - sends PUT requests to a service with OAuth authentication
+   *
+   * @param  {string} url
+   * @param  {Object} data
+   * @return {Promise}
+   */
+  executePut(url, data) {
+    return this.client
+      .request('clientCredentials')
+      .put(url)
       .accept('json')
       .send(data)
       .then(res => res.body);

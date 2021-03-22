@@ -37,7 +37,7 @@ class UsersNorthstarEndpoint extends NorthstarEndpoint {
    * @param  {Object} data
    * @return {Promise}
    */
-  update(id, data) { return this.executePost(`${this.baseUri}/users/${id}`, data); }
+  update(id, data) { return this.executePut(`${this.baseUri}/users/${id}`, data); }
 }
 
 module.exports = UsersNorthstarEndpoint;
